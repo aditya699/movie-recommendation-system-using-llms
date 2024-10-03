@@ -21,8 +21,8 @@ def load_movielens_100k(path='../Data/ml-100k/'):
     # Load ratings data
     columns = ['user_id', 'item_id', 'rating', 'timestamp']
     ratings = pd.read_csv(path + 'u.data', sep='\t', names=columns)
-    print(ratings.head())
-    print(ratings.shape)
+    # print(ratings.head())
+    # print(ratings.shape)
 
     # Load movie data
     movie_columns = ['item_id', 'title', 'release_date', 'video_release_date', 
@@ -31,18 +31,18 @@ def load_movielens_100k(path='../Data/ml-100k/'):
                      'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi', 
                      'Thriller', 'War', 'Western']
     movies = pd.read_csv(path + 'u.item', sep='|', names=movie_columns, encoding='latin-1')
-    print(movies.head())
-    print(movies.shape)
+    # print(movies.head())
+    # print(movies.shape)
     # Merge ratings with movie titles
     df = pd.merge(ratings, movies[['item_id', 'title']], on='item_id')
-    print(df.head())
-    print(df.shape)
+    # print(df.head())
+    # print(df.shape)
     # Convert timestamp to datetime
     df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s')
 
     # Sort by user_id and timestamp
     df = df.sort_values(['user_id', 'timestamp'])
-    print(df.head())
+    # print(df.head())
     # Create user history
     user_history = df.groupby('user_id').apply(lambda x: x['item_id'].tolist()).to_dict()
 
