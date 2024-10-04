@@ -64,8 +64,51 @@ def calculate_item_similarities(user_item_matrix):
     print(user_item_matrix.T)
     return cosine_similarity(user_item_matrix.T)
 
+def retrieve(user_id, item_history, user_item_matrix, item_similarities, user_to_index, item_to_index, n_candidates=20):
+    if user_id not in user_to_index:
+        print(f"User {user_id} not in training data. Returning random items.")
+        return np.random.choice(list(item_to_index.keys()), size=n_candidates, replace=False)
+
+    user_index = user_to_index[user_id]
+    user_vector = user_item_matrix[user_index]
+    
+    # Get indices of items in the user's history
+    history_indices = [item_to_index[item] for item in item_history if item in item_to_index]
+    print("User history indices:", history_indices)
+    
+    # Calculate the average similarity to items in the user's history
+    avg_similarities = np.mean(item_similarities[:, history_indices], axis=1)
+    
+    # Create a mask to exclude items in the user's history
+    mask = np.ones(len(avg_similarities), dtype=bool)
+    mask[history_indices] = False
+    print("Number of items excluded by mask:", np.sum(~mask))
+    
+    # Sort items by similarity and get top N candidates, excluding items in history
+    masked_similarities = avg_similarities[mask]
+    candidate_indices = np.argsort(masked_similarities)[::-1][:n_candidates]
+    
+    # Map the masked indices back to the original indices
+    original_indices = np.arange(len(avg_similarities))[mask][candidate_indices]
+    
+    # Convert indices back to item IDs
+    index_to_item = {v: k for k, v in item_to_index.items()}
+    candidates = [index_to_item[idx] for idx in original_indices]
+    
+    print(f"Retrieved {len(candidates)} candidates for user {user_id}")
+    print("Sample candidates:", candidates[:5])
+    
+    # Check if any history items are in the candidates
+    intersection = set(item_history) & set(candidates)
+    if intersection:
+        print("WARNING: Some history items are still in candidates:", intersection)
+    else:
+        print("Success: No history items in candidates")
+    
+    return candidates
 # Load and prepare data
 df, user_history = load_movielens_100k()
+
 user_item_matrix, user_to_index, item_to_index = create_user_item_matrix(df)
 
 # Calculate item similarities
@@ -73,3 +116,13 @@ item_similarities = calculate_item_similarities(user_item_matrix)
 print(item_similarities)
 print("Shape of item similarity matrix:", item_similarities.shape)
 print("Sample similarity between item 0 and item 1:", item_similarities[0][1])
+# Step 5: Use the retrieve function to get recommendations
+test_user_id = df['user_id'].iloc[0]
+
+test_history = user_history[test_user_id] 
+
+print(f"\nTesting retrieval for user {test_user_id}")
+print("User history:", test_history)
+
+candidates = retrieve(test_user_id, test_history, user_item_matrix, item_similarities, user_to_index, item_to_index)
+print("Retrieved candidates:", candidates)
