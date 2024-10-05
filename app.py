@@ -219,20 +219,9 @@ if selected_user:
                     st.markdown(f"<div class='movie-title'>{movie}</div>", unsafe_allow_html=True)
                 
 
-        # Add a fun fact or movie quote
-        movie_quotes = [
-            "Here's looking at you, kid. - Casablanca",
-            "I'm going to make him an offer he can't refuse. - The Godfather",
-            "May the Force be with you. - Star Wars",
-            "You talkin' to me? - Taxi Driver",
-            "E.T. phone home. - E.T. the Extra-Terrestrial"
-        ]
-        st.sidebar.markdown("---")
-        st.sidebar.markdown(f"**Movie Magic Quote:**\n\n*{random.choice(movie_quotes)}*")
-
 st.sidebar.markdown("---")
 st.sidebar.info("This app uses collaborative filtering and AI to recommend movies based on user history.")
-st.sidebar.text("Made with ❤️ by Your Favorite AI")
+st.sidebar.text("Made with ❤️ by Aditya Bhatt")
 
 # Add a footer
 st.markdown("---")
