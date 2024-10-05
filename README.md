@@ -78,7 +78,7 @@ To set up and run the Movie Magic Recommender:
 
 ## Contributors
 
-- [Aditya Bhatt](https://github.com/your-username)
+- [Aditya Bhatt](https://github.com/aditya699)
 
 ## License
 
