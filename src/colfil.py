@@ -165,7 +165,7 @@ print(item_similarities)
 print("Shape of item similarity matrix:", item_similarities.shape)
 print("Sample similarity between item 0 and item 1:", item_similarities[0][1])
 # Step 5: Use the retrieve function to get recommendations
-test_user_id = df['user_id'].iloc[1000]
+test_user_id = df['user_id'].iloc[0]
 
 test_history = user_history[test_user_id] 
 
