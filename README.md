@@ -53,8 +53,8 @@ To set up and run the Movie Magic Recommender:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/movie-magic-recommender.git
-   cd movie-magic-recommender
+   git clone git clone https://github.com/aditya699/movie-recommendation-system-using-llms.git
+   cd movie-recommendation-system-using-llms
    ```
 
 2. Install the required dependencies:
