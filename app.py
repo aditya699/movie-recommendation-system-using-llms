@@ -160,7 +160,27 @@ st.markdown("Discover your next favorite film with the power of AI!")
 # Sidebar
 st.sidebar.image("https://img.freepik.com/free-vector/cinema-realistic-poster-with-illuminated-bucket-popcorn-drink-3d-glasses-reel-tickets-blue-background-with-tapes-vector-illustration_1284-77070.jpg", use_column_width=True)
 st.sidebar.header("🎭 User Selection")
-selected_user = st.sidebar.selectbox("Select a user", options=list(user_history.keys()))
+
+# User input for user ID
+user_input = st.sidebar.text_input("Enter a user ID:", "")
+
+# Validate user input
+if user_input:
+    try:
+        selected_user = int(user_input)
+        if selected_user not in user_history:
+            st.sidebar.error(f"User ID {selected_user} not found. Please enter a valid user ID.")
+            selected_user = None
+        else:
+            st.sidebar.success(f"User ID {selected_user} selected!")
+    except ValueError:
+        st.sidebar.error("Please enter a valid numeric user ID.")
+        selected_user = None
+else:
+    selected_user = None
+
+# Display some information about available user IDs
+st.sidebar.info(f"Available user IDs range from {min(user_history.keys())} to {max(user_history.keys())}.")
 
 # Main content
 if selected_user:
@@ -197,7 +217,7 @@ if selected_user:
                 with st.expander(f"{rank}. {movie}"):
                     st.markdown(f"<div class='movie-rank'>#{rank}</div>", unsafe_allow_html=True)
                     st.markdown(f"<div class='movie-title'>{movie}</div>", unsafe_allow_html=True)
-            
+                
 
         # Add a fun fact or movie quote
         movie_quotes = [
